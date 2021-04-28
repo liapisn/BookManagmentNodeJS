@@ -6,6 +6,7 @@ oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 const user= "IT21950";
 const password = "liapis1234";
 const url = "jdbc:oracle:thin:@oracle12c.hua.gr:1521:orcl";
+
 app.post('/addBook',(req,res)=>
 {
     let connection;
@@ -65,3 +66,5 @@ app.get('/getBook',(req,res)=>
         }
     }
 });
+
+app.listen(3000)
