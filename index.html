@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+
+        </title>
+    </head>
+    <body>
+        <input type="text" id="author">
+        <input type="text" id="title">
+        <select id="genre">
+            <option value="Science fiction">Science fiction</option>
+            <option value="Satire">Satire</option>
+            <option value="Drama">Drama</option>
+            <option value="Action and Adventure">Action and Adventure</option>
+            <option value="Romance">Romance</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Horror">Horror</option>
+        </select>
+        <input type="text" id="price">
+        <input type="button" id="addBook" value="addBook"> <br>
+        <input type="text" id="searchBook" >
+        <input type="button" id="getBook" value="getBook">
+        <div id="books"></div>
+    </body>
+    <script type="text/Javascript">
+        window.addEventListener('load',(event)=>
+        {
+            document.getElementById('addBook').addEventListener('click',(event)=>
+            {
+                const book= {
+                    'author':document.getElementById('author').value,
+                    'title':document.getElementById('title').value,
+                    'genre':document.getElementById('genre').value,
+                    'price':document.getElementById('price').value,
+                };
+
+                const xhr = new XMLHttpRequest;
+                xhr.open('POST','http://localhost:3000/addBook',true);
+                xhr.setRequestHeader('Content-Type','application/json')
+                xhr.send(JSON.stringify(book));
+                xhr.onreadystatechange = function()
+                {
+                    if(xhr.readyState==4)
+                    {
+                        if(xhr.status==200)
+                        {
+                        alert(xhr.responseText);
+                        }
+                    }
+                };
+            });
+
+             document.getElementById('getBook').addEventListener('click',(event)=>
+             {
+
+             });
+        });
+    </script>
+</html>
