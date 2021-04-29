@@ -7,37 +7,55 @@ const user= "IT21950";
 const password = "liapis1234";
 const url = "jdbc:oracle:thin:@oracle12c.hua.gr:1521:orcl";
 
+const cors = require('cors');
+const parser = require('body-parser');
+app.use(cors());
+app.use(parser.json());
+
 app.post('/addBook',(req,res)=>
 {
     let connection;
     const book = req.body;
-
-    try {
-        connection = oracledb.getConnection( {
-            user          : user,
-            password      : password,
-            connectString : url
+    oracledb.getConnection(
+    {
+        user          : user,
+        password      : password,
+        connectString : url
+    },
+    function(err, connection)
+    {
+        if (err) { console.error(err); return; }
+        connection.execute(`INSERT INTO BOOKS VALUES (:author,:title,:genre,:price)`[book.author,book.title,book.genre,book.price],
+        function(err, result)
+        {
+        if (err) { console.error(err); return; }
+        console.log(book.body+" added");
         });
+    });
+    // try {
+    //     connection = oracledb.getConnection( {
+    //         user          : user,
+    //         password      : password,
+    //         connectString : url
+    //     });
 
-        const result = connection.execute(
-        //    `SELECT * FROM BOOKS WHERE title =:title`,[book.title]);
-            `INSERT INTO BOOKS VALUES (:author,:title,:genre,:price)`[book.author,book.title,book.genre,book.price]);
-         console.log(book.body+" added");
-
-    } catch (err) {
-        console.error(err);
-    } finally {
-        if (connection) {
-            try {
-                connection.close();
-            } catch (err) {
-                console.error(err);
-            }
-        }
-    }
+    //     const result = connection.execute(
+    //         `INSERT INTO BOOKS VALUES (:author,:title,:genre,:price)`[book.author,book.title,book.genre,book.price]);
+    //         console.log(book.body+" added");
+    // } catch (err) {
+    //     console.error(err);
+    // } finally {
+    //     if (connection) {
+    //         try {
+    //             connection.close();
+    //         } catch (err) {
+    //             console.error(err);
+    //         }
+    //     }
+    // }
 });
 
-app.get('/getBook',(req,res)=>
+app.post('/getBook',(req,res)=>
 {
     let connection;
     try {
@@ -68,3 +86,5 @@ app.get('/getBook',(req,res)=>
 });
 
 app.listen(3000)
+
+console.log("App runnig");
