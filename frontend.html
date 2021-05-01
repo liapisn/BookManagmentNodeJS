@@ -44,9 +44,14 @@
                     'price':document.getElementById('price').value,
                 };
                 
-                if(!book.author || !book.title || !book.genre || !book.price)
+                if(!book.author || !book.title || !book.genre || !book.price )
                 {
                     alert("Fill out all the parameters to insert a book into the db");
+                    return;
+                }
+                if(book.price <=0 || book.price >100)
+                {
+                    alert("Wrong input in price section it must be between 0.01 and 100");
                     return;
                 }
                 const xhr = new XMLHttpRequest;
