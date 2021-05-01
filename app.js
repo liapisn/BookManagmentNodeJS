@@ -20,8 +20,9 @@ app.post('/books', (req, res) =>
     db.close();
 });
 
-app.get('/getBooks', (req, res) => 
+app.get('/books/', (req, res) => 
 {
+    console.log("into books/key url")
     //const book = req.body;
     //console.log(book.title);
     let key='game';

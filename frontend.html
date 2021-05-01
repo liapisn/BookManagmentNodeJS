@@ -5,24 +5,32 @@
 
         </title>
     </head>
-    <body>
-        author => <input type="text" id="author"> 
-        title => <input type="text" id="title">
-        genre => <select id="genre">
-            <option value="Science fiction">Science fiction</option>
-            <option value="Satire">Satire</option>
-            <option value="Drama">Drama</option>
-            <option value="Action and Adventure">Action and Adventure</option>
-            <option value="Romance">Romance</option>
-            <option value="Mystery">Mystery</option>
-            <option value="Horror">Horror</option>
-        </select>
-        price => <input type="text" id="price">
-        <input type="button" id="addBook" value="addBook"> <br>
-        keyword => <input type="text" id="searchBook" >
-        <input type="button" id="getBooks" value="getBooks">
-        <div id="text">author | title | genre | price</div>
-        <div id="books"></div>
+    <body style="background-color:  indigo;">
+        <div id="addBooks" style="color: black; background-color: orange;">
+            Fill out the following dat to insert a new book into our db <br>
+            Author => <input type="text" id="author" style="color:black; background-color: orangered; "> 
+            Title => <input type="text" id="title" style="color:black; background-color: orangered; ">
+            Genre => <select id="genre" style="color:black; background-color: orangered; ">
+                <option value="Science fiction">Science fiction</option>
+                <option value="Satire">Satire</option>
+                <option value="Drama">Drama</option>
+                <option value="Action and Adventure">Action and Adventure</option>
+                <option value="Romance">Romance</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Horror">Horror</option>
+            </select>
+            Price => <input type="text" id="price" style="color:black; background-color: orangered; ">
+            <input type="button" id="addBook" value="Add Book" style="color:black; background-color: orangered; "> <br>
+        </div>
+        <br>
+        <div id=searchbooks style="color: orangered; background-color: blue;">
+            Write a keyword to find a book which containts it in it's title or author <br>
+            Keyword => <input type="text" id="searchBook" style="color:black; background-color: orangered; " >
+            <input type="button" id="getBooks" value="Get Books" style="color:black; background-color: orangered; ">
+        </div>
+        <br>
+        <div id="text" style="color: greenyellow;" >author | title | genre | price</div>
+        <div id="books" style="background-color: greenyellow;"></div>
     </body>
     <script type="text/Javascript">
         window.addEventListener('load',(event)=>
@@ -66,7 +74,7 @@
                     return;
                 }
                 const xhr = new XMLHttpRequest;
-                xhr.open('GET','http://localhost:3000/getBooks',true);
+                xhr.open('GET','http://localhost:3000/books/',true);
                 xhr.send();
                 xhr.onreadystatechange = function()
                 {
@@ -76,8 +84,8 @@
                         {   
                             let divElem = document.getElementById('books');
                             const result = JSON.parse(xhr.responseText);
-                            result.forEach((item)=>{
-
+                            result.forEach((item)=>
+                            {
                                 divElem.innerHTML+=`${item.author}|${item.title}|${item.genre}|${item.price}<br>`;
                             });
                         }
