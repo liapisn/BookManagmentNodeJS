@@ -8,7 +8,7 @@ const { json } = require('express');
 app.use(cors());
 app.use(parser.json());
 
-app.post('/addBook', (req, res) => 
+app.post('/books', (req, res) => 
 {
     const book = req.body;
     let db = new sqlite3.Database('./db/books.db');

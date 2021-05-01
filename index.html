@@ -35,8 +35,14 @@
                     'genre':document.getElementById('genre').value,
                     'price':document.getElementById('price').value,
                 };
+                
+                if(!book.author || !book.title || !book.genre || !book.price)
+                {
+                    alert("Fill out all the parameters to insert a book into the db");
+                    return;
+                }
                 const xhr = new XMLHttpRequest;
-                xhr.open('POST','http://localhost:3000/addBook',true);
+                xhr.open('POST','http://localhost:3000/books',true);
                 xhr.setRequestHeader('Content-Type','application/json')
                 xhr.send(JSON.stringify(book));
                 xhr.onreadystatechange = function()
@@ -52,15 +58,15 @@
             });
 
             document.getElementById('getBooks').addEventListener('click',(event)=>
-            {
-                // const book= 
-                // {
-                    title: document.getElementById('searchBook').value;
-                // };
-                
+            {                 
+                let key= document.getElementById('searchBook').value;
+                if(!key)
+                {
+                    alert("Give keyword to search a book!");
+                    return;
+                }
                 const xhr = new XMLHttpRequest;
                 xhr.open('GET','http://localhost:3000/getBooks',true);
-                // xhr.setRequestHeader('Content-Type','application/json')
                 xhr.send();
                 xhr.onreadystatechange = function()
                 {
