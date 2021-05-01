@@ -79,7 +79,8 @@
                     return;
                 }
                 const xhr = new XMLHttpRequest;
-                xhr.open('GET','http://localhost:3000/books/',true);
+                url=("http://localhost:3000/books/"+key);
+                xhr.open('GET',url,true);
                 xhr.send();
                 xhr.onreadystatechange = function()
                 {

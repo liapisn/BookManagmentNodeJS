@@ -20,12 +20,14 @@ app.post('/books', (req, res) =>
     db.close();
 });
 
-app.get('/books/', (req, res) => 
+app.get('/books/*', (req, res) => 
 {
-    console.log("into books/key url")
+    console.log(req.originalUrl);
+    let urlString=req.originalUrl;
     //const book = req.body;
     //console.log(book.title);
-    let key='game';
+    let key=urlString.slice(7)
+    console.log(key);
     let keyword ='%'+key+'%';
     let db = new sqlite3.Database('./db/books.db');
     let sql = (`select * from books where title like ? or author like ? `);
