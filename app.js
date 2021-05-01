@@ -1,88 +1,48 @@
-const oracledb = require('oracledb');
+const sqlite3 = require('sqlite3').verbose();
+//create table books ( id integer primary key autoincrement , author text not null , title text not null , genre text not null , price integer not null );
 const express = require('express')
 const app = express()
-
-oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
-const user= "IT21950";
-const password = "liapis1234";
-const url = "jdbc:oracle:thin:@oracle12c.hua.gr:1521:orcl";
-
 const cors = require('cors');
 const parser = require('body-parser');
+const { json } = require('express');
 app.use(cors());
 app.use(parser.json());
 
-app.post('/addBook',(req,res)=>
+app.post('/addBook', (req, res) => 
 {
-    let connection;
     const book = req.body;
-    oracledb.getConnection(
+    let db = new sqlite3.Database('./db/books.db');
+    db.run(`INSERT INTO BOOKS (author,title,genre,price) VALUES (?,?,?,?)`,[book.author, book.title, book.genre, book.price])
     {
-        user          : user,
-        password      : password,
-        connectString : url
-    },
-    function(err, connection)
-    {
-        if (err) { console.error(err); return; }
-        connection.execute(`INSERT INTO BOOKS VALUES (:author,:title,:genre,:price)`[book.author,book.title,book.genre,book.price],
-        function(err, result)
-        {
-        if (err) { console.error(err); return; }
-        console.log(book.body+" added");
-        });
-    });
-    // try {
-    //     connection = oracledb.getConnection( {
-    //         user          : user,
-    //         password      : password,
-    //         connectString : url
-    //     });
-
-    //     const result = connection.execute(
-    //         `INSERT INTO BOOKS VALUES (:author,:title,:genre,:price)`[book.author,book.title,book.genre,book.price]);
-    //         console.log(book.body+" added");
-    // } catch (err) {
-    //     console.error(err);
-    // } finally {
-    //     if (connection) {
-    //         try {
-    //             connection.close();
-    //         } catch (err) {
-    //             console.error(err);
-    //         }
-    //     }
-    // }
+        console.log("a book with title: "+book.title +" added");
+    }
+    res.send("a book with title: "+book.title +" added");
+    db.close();
 });
 
-app.post('/getBook',(req,res)=>
+app.get('/getBooks', (req, res) => 
 {
-    let connection;
-    try {
-        connection = oracledb.getConnection( {
-            user          : user,
-            password      : password,
-            connectString : url
-        });
-
-
-        const result = connection.execute(
-                `SELECT * FROM BOOKS WHERE title =:title`,[req]);
-        let book = result.rows;
-        res.send(JSON.stringify(book));
-        // console.log(result.rows);
-
-    } catch (err) {
-        console.error(err);
-    } finally {
-        if (connection) {
-            try {
-                connection.close();
-            } catch (err) {
-                console.error(err);
-            }
+    //const book = req.body;
+    //console.log(book.title);
+    let key='game';
+    let keyword ='%'+key+'%';
+    let db = new sqlite3.Database('./db/books.db');
+    let sql = (`select * from books where title like ? or author like ? `);
+    db.all(sql, [keyword,keyword], (err, rows) =>
+    {
+        res.send(JSON.stringify(rows));
+        if (err) 
+        {
+            throw err;
         }
-    }
+        console.log("Matching book titles for keyword '"+key+"' are:");
+        rows.forEach((row) => 
+        {
+            console.log(row.title);
+        });
+    });
+    
+    db.close();
 });
 
 app.listen(3000)

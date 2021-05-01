@@ -6,9 +6,9 @@
         </title>
     </head>
     <body>
-        <input type="text" id="author">
-        <input type="text" id="title">
-        <select id="genre">
+        author => <input type="text" id="author"> 
+        title => <input type="text" id="title">
+        genre => <select id="genre">
             <option value="Science fiction">Science fiction</option>
             <option value="Satire">Satire</option>
             <option value="Drama">Drama</option>
@@ -17,10 +17,11 @@
             <option value="Mystery">Mystery</option>
             <option value="Horror">Horror</option>
         </select>
-        <input type="text" id="price">
+        price => <input type="text" id="price">
         <input type="button" id="addBook" value="addBook"> <br>
-        <input type="text" id="searchBook" >
-        <input type="button" id="getBook" value="getBook">
+        keyword => <input type="text" id="searchBook" >
+        <input type="button" id="getBooks" value="getBooks">
+        <div id="text">author | title | genre | price</div>
         <div id="books"></div>
     </body>
     <script type="text/Javascript">
@@ -34,7 +35,6 @@
                     'genre':document.getElementById('genre').value,
                     'price':document.getElementById('price').value,
                 };
-
                 const xhr = new XMLHttpRequest;
                 xhr.open('POST','http://localhost:3000/addBook',true);
                 xhr.setRequestHeader('Content-Type','application/json')
@@ -51,10 +51,34 @@
                 };
             });
 
-             document.getElementById('getBook').addEventListener('click',(event)=>
-             {
+            document.getElementById('getBooks').addEventListener('click',(event)=>
+            {
+                // const book= 
+                // {
+                    title: document.getElementById('searchBook').value;
+                // };
+                
+                const xhr = new XMLHttpRequest;
+                xhr.open('GET','http://localhost:3000/getBooks',true);
+                // xhr.setRequestHeader('Content-Type','application/json')
+                xhr.send();
+                xhr.onreadystatechange = function()
+                {
+                    if(xhr.readyState==4)
+                    {
+                        if(xhr.status==200)
+                        {   
+                            let divElem = document.getElementById('books');
+                            const result = JSON.parse(xhr.responseText);
+                            result.forEach((item)=>{
 
-             });
+                                divElem.innerHTML+=`${item.author}|${item.title}|${item.genre}|${item.price}<br>`;
+                            });
+                        }
+                    }
+                };
+            });
         });
     </script>
+    
 </html>
