@@ -1,5 +1,4 @@
 const sqlite3 = require('sqlite3').verbose();
-//create table books ( id integer primary key autoincrement , author text not null , title text not null , genre text not null , price float not null );
 let db = new sqlite3.Database('./db/books.db');
 db.run(`CREATE TABLE IF NOT EXISTS books ( id integer primary key autoincrement , author text not null , title text not null , genre text not null , price float not null )`)
 db.close();
@@ -7,7 +6,6 @@ const express = require('express')
 const app = express()
 const cors = require('cors');
 const parser = require('body-parser');
-const { json } = require('express');
 app.use(cors());
 app.use(parser.json());
 
@@ -51,4 +49,4 @@ app.get('/books/*', (req, res) =>
 
 app.listen(3000)
 
-console.log("App runnig");
+console.log("App running");

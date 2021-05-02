@@ -24,7 +24,7 @@
         </div>
         <br>
         <div id=searchbooks style="color: orangered; background-color: blue;">
-            Write a keyword to find a book which containts it in it's title <br>
+            Write a keyword to find a book which containts it in its title <br>
             Keyword => <input type="text" id="searchBook" style="color:black; background-color: orangered; " >
             <input type="button" id="getBooks" value="Get Books" style="color:black; background-color: orangered; ">
         </div>
@@ -41,7 +41,7 @@
                     'author':document.getElementById('author').value,
                     'title':document.getElementById('title').value,
                     'genre':document.getElementById('genre').value,
-                    'price':document.getElementById('price').value,
+                    'price': +document.getElementById('price').value,
                 };
                 
                 /**
@@ -49,9 +49,14 @@
                  */
                 document.getElementById('author').value='';
                 document.getElementById('title').value='';
-                document.getElementById('genre').value='';
+                document.getElementById('genre').value='Science fiction';
                 document.getElementById('price').value='';
 
+                if(Number.isNaN(book.price))
+                {
+                    alert("Wrong input in price it must be a number");
+                    return;
+                }
                 if(!book.author || !book.title || !book.genre || !book.price )
                 {
                     alert("Fill out all the parameters to insert a book into the db");
