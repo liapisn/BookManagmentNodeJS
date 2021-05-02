@@ -24,12 +24,12 @@
         </div>
         <br>
         <div id=searchbooks style="color: orangered; background-color: blue;">
-            Write a keyword to find a book which containts it in it's title or author <br>
+            Write a keyword to find a book which containts it in it's title <br>
             Keyword => <input type="text" id="searchBook" style="color:black; background-color: orangered; " >
             <input type="button" id="getBooks" value="Get Books" style="color:black; background-color: orangered; ">
         </div>
         <br>
-        <div id="text" style="color: greenyellow;" >author | title | genre | price</div>
+        <div id="text" style="color: greenyellow;" >id | author | title | genre | price</div>
         <div id="books" style="background-color: greenyellow;"></div>
     </body>
     <script type="text/Javascript">
@@ -44,12 +44,20 @@
                     'price':document.getElementById('price').value,
                 };
                 
+                /**
+                 * clearing the text boxes  
+                 */
+                document.getElementById('author').value='';
+                document.getElementById('title').value='';
+                document.getElementById('genre').value='';
+                document.getElementById('price').value='';
+
                 if(!book.author || !book.title || !book.genre || !book.price )
                 {
                     alert("Fill out all the parameters to insert a book into the db");
                     return;
                 }
-                if(book.price <=0 || book.price >100)
+                if(book.price <0.01 || book.price >100)
                 {
                     alert("Wrong input in price section it must be between 0.01 and 100");
                     return;
@@ -64,7 +72,11 @@
                     {
                         if(xhr.status==200)
                         {
-                        alert(xhr.responseText);
+                            alert(xhr.responseText);
+                        }
+                        else
+                        {
+                            alert("Error 404");
                         }
                     }
                 };
@@ -73,6 +85,8 @@
             document.getElementById('getBooks').addEventListener('click',(event)=>
             {                 
                 let key= document.getElementById('searchBook').value;
+                document.getElementById('searchBook').value=''; // clear the text box
+                document.getElementById('books').innerHTML=''; // clear result section 
                 if(!key)
                 {
                     alert("Give keyword to search a book!");
@@ -88,11 +102,12 @@
                     {
                         if(xhr.status==200)
                         {   
+                            alert("Here are all the matching books found for keyword '"+key+"'")
                             let divElem = document.getElementById('books');
                             const result = JSON.parse(xhr.responseText);
                             result.forEach((item)=>
                             {
-                                divElem.innerHTML+=`${item.author}|${item.title}|${item.genre}|${item.price}<br>`;
+                                divElem.innerHTML+=`${item.id}|${item.author}|${item.title}|${item.genre}|${item.price}<br>`;
                             });
                         }
                     }
@@ -100,5 +115,4 @@
             });
         });
     </script>
-    
 </html>
