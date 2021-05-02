@@ -29,7 +29,7 @@
             <input type="button" id="getBooks" value="Get Books" style="color:black; background-color: orangered; ">
         </div>
         <br>
-        <div id="text" style="color: greenyellow;" >id | author | title | genre | price</div>
+        <div id="text" style="color: greenyellow;" ></div>
         <div id="books" style="background-color: greenyellow;"></div>
     </body>
     <script type="text/Javascript">
@@ -37,6 +37,8 @@
         {
             document.getElementById('addBook').addEventListener('click',(event)=>
             {
+                document.getElementById('text').innerHTML='';
+                document.getElementById('books').innerHTML='';
                 const book= {
                     'author':document.getElementById('author').value,
                     'title':document.getElementById('title').value,
@@ -108,6 +110,7 @@
                         if(xhr.status==200)
                         {   
                             alert("Here are all the matching books found for keyword '"+key+"'")
+                            document.getElementById('text').innerHTML='id | author | title | genre | price';
                             let divElem = document.getElementById('books');
                             const result = JSON.parse(xhr.responseText);
                             result.forEach((item)=>
