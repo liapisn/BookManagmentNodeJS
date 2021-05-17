@@ -4,13 +4,31 @@
         <title>
             Book Managment Nodejs
         </title>
+        <link rel="shortcut icon" href="images/favicon.png">
+        <style>
+            input,select{text-align: center; color:black;   background-color: orangered;}
+            body{background-color:  indigo;}
+            header{color: indigo; background-color: #0fc690; text-align: center;}
+            header span{color: blue}
+            figure{text-align: center;}
+            .addbooks{color: black; background-color: orange; text-align: center;}
+            .searchbooks{color: orangered; background-color: blue; text-align: center; }
+            .text{color: #0fc690; text-align: center;}
+            .books{background-color: #0fc690; text-align: center;}
+            .footer {background: #023023; padding-top: 55px;}
+        </style>   
     </head>
-    <body style="background-color:  indigo;">
-        <div id="addBooks" style="color: black; background-color: orange;">
+    <header >
+        <h1>Book Management in Nodejs</h1>
+        <!-- <p>This page is a web app for book Management where you can find a book by its title or add a new book into our dataBase</p> -->
+        <p>This page is a web app for book Management where you can store a book into the Data Base and find a book by its title </p>
+    </header>
+    <body >
+        <div id="addBooks" class="addbooks" >
             Fill out the following dat to insert a new book into our db <br>
-            Author => <input type="text" id="author" style="color:black; background-color: orangered; "> 
-            Title => <input type="text" id="title" style="color:black; background-color: orangered; ">
-            Genre => <select id="genre" style="color:black; background-color: orangered; ">
+            Author => <input type="text" id="author" > 
+            Title => <input type="text" id="title" >
+            Genre => <select id="genre" >
                 <option value="Science fiction">Science fiction</option>
                 <option value="Satire">Satire</option>
                 <option value="Drama">Drama</option>
@@ -19,19 +37,25 @@
                 <option value="Mystery">Mystery</option>
                 <option value="Horror">Horror</option>
             </select>
-            Price => <input type="number" id="price" min="0.00" max="100" style="color:black; background-color: orangered; ">
-            <input type="button" id="addBook" value="Add Book" style="color:black; background-color: orangered; "> <br>
+            Price => <input type="number" id="price" min="0.00" max="100" >
+            <input type="button" id="addBook" value="Add Book"> <br>
         </div>
+        <figure><img src="images/about.png" alt="img"/></figure>
         <br>
-        <div id=searchbooks style="color: orangered; background-color: blue;">
+        <div id=searchbooks class="searchbooks">
             Write a keyword to find a book which containts it in its title <br>
-            Keyword => <input type="text" id="searchBook" style="color:black; background-color: orangered; " >
-            <input type="button" id="getBooks" value="Get Books" style="color:black; background-color: orangered; ">
+            Keyword => <input type="text" id="searchBook"  >
+            <input type="image" id="getBooks" src="images/search_icon.png" alt="Submit" width="29" height="29" >
+            <!-- <input type="button" id="getBooks" value="Get Books" > -->
         </div>
-        <br>
-        <div id="text" style="color: greenyellow;" ></div>
-        <div id="books" style="background-color: greenyellow;"></div>
+        <div id="text" class="text" ></div><br>
+        <div id="books" class="books"></div>
+        <figure><img src="images/searchBook.jpg" alt="img"/></figure>
     </body>
+    <footer>
+        <div class="footer">
+        </div>
+    </footer>
     <script type="text/Javascript">
         window.addEventListener('load',(event)=>
         {
@@ -109,14 +133,22 @@
                     {
                         if(xhr.status==200)
                         {   
-                            alert("Here are all the matching books found for keyword '"+key+"'")
-                            document.getElementById('text').innerHTML='id | author | title | genre | price';
-                            let divElem = document.getElementById('books');
-                            const result = JSON.parse(xhr.responseText);
-                            result.forEach((item)=>
+                            if(!xhr.responseText)
                             {
-                                divElem.innerHTML+=`${item.id}|${item.author}|${item.title}|${item.genre}|${item.price}<br>`;
-                            });
+                                document.getElementById('text').innerHTML='';
+                                alert("There are no books found with keyword: "+key);
+                            }
+                            else
+                            {
+                                alert("Here are all the matching books found for keyword '"+key+"'")
+                                document.getElementById('text').innerHTML='<h1 className= "text-center">Books</h1> id | author | title | genre | price';
+                                let divElem = document.getElementById('books');
+                                const result = JSON.parse(xhr.responseText);
+                                result.forEach((item)=>
+                                {
+                                    divElem.innerHTML+=`${item.id}|${item.author}|${item.title}|${item.genre}|${item.price}<br>`;
+                                });
+                            }
                         }
                     }
                 };

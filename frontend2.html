@@ -1,0 +1,237 @@
+<!--Based on this template-->
+<!--https://www.free-css.com/free-css-templates/page260/wise -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>Book Management Nodejs</title>
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- style css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<!-- body -->
+<body >
+<!-- header -->
+<header>
+    <!-- header inner -->
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                    <div class="full">
+                        <div class="center-desk">
+                            <div class="logo"> <a href="frontend2.html">Book Management</a> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                    <div class="menu-area">
+                        <div class="limit-box">
+                            <nav class="main-menu">
+                                <ul class="menu-area-main">
+                                    <li class="active"> <a href="frontend2.html">Home</a> </li>
+                                    <li> <a href="#newBook">New Book</a> </li>
+                                    <li> <a href="#search">Search Book</a> </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- end header inner -->
+</header>
+<!-- end header -->
+<section class="slider_section">
+    <div class="carousel slide banner-main" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="first-slide" src="images/banner.jpg" alt="First slide">
+                <div class="container">
+                    <div class="carousel-caption relative">
+                        <h1 >Book Management web application</h1>
+                        <p >This page is a web app for book Management where you can find a book by its title or add a new book into our dataBase</p>
+                        <a  href="#newBook">Add new book</a> <a  href="#searchBook">Search book</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- newBook  -->
+<div id="newBook" class="about top_layer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="titlepage">
+                    <h2>Add new book</h2>
+                    Author: <input type="text" id="author" >
+                    Title: <input type="text" id="title" >
+                    Genre: <select id="genre" >
+                    <option value="Science fiction">Science fiction</option>
+                    <option value="Satire">Satire</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Action and Adventure">Action and Adventure</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Horror">Horror</option>
+                </select>
+                    Price: <input type="number" id="price" min="0.00" max="100" >
+                    <input type="button" id="addBook" value="Add Book"> <br>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="img-box">
+                    <figure><img src="images/about.png" alt="img"/></figure>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end new Book -->
+<!-- search Book -->
+<div id="search" class="service">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="titlepage">
+                    <h2>Search Books </h2>
+                    <span>Provide a keyword to search</span><br>
+                    Keyword: <input type="text" id="searchBook"  >
+                    <input type="image" id="getBooks" src="images/search_icon.png" alt="Submit" width="29" height="29" >
+                    <div id="text" class="text" ></div>
+                    <div id="books" class="books" ></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="img-box">
+                    <figure><img src="images/searchBook.jpg" alt="img"/></figure>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end searchBook -->
+<!--  footer -->
+<footr>
+    <div class="footer">
+    </div>
+</footr>
+<!-- end footer -->
+<!-- Javascript files-->
+<script type="text/Javascript">
+    window.addEventListener('load',(event)=>
+    {
+        document.getElementById('addBook').addEventListener('click',(event)=>
+        {
+            document.getElementById('text').innerHTML='';
+            document.getElementById('books').innerHTML='';
+            const book= {
+                'author':document.getElementById('author').value,
+                'title':document.getElementById('title').value,
+                'genre':document.getElementById('genre').value,
+                'price': +document.getElementById('price').value,
+            };
+
+            /**
+             * clearing the text boxes
+             */
+            document.getElementById('author').value='';
+            document.getElementById('title').value='';
+            document.getElementById('genre').value='Science fiction';
+            document.getElementById('price').value='';
+
+            if(Number.isNaN(book.price))
+            {
+                alert("Wrong input in price it must be a number");
+                return;
+            }
+            if(!book.author || !book.title || !book.genre || !book.price )
+            {
+                alert("Fill out all the parameters to insert a book into the db");
+                return;
+            }
+            if(book.price <0.01 || book.price >100)
+            {
+                alert("Wrong input in price section it must be between 0.01 and 100");
+                return;
+            }
+            const xhr = new XMLHttpRequest;
+            xhr.open('POST','http://localhost:3000/books',true);
+            xhr.setRequestHeader('Content-Type','application/json')
+            xhr.send(JSON.stringify(book));
+            xhr.onreadystatechange = function()
+            {
+                if(xhr.readyState==4)
+                {
+                    if(xhr.status==200)
+                    {
+                        alert(xhr.responseText);
+                    }
+                    else
+                    {
+                        alert("Error 404");
+                    }
+                }
+            };
+        });
+
+        document.getElementById('getBooks').addEventListener('click',(event)=>
+        {
+            let key= document.getElementById('searchBook').value;
+            document.getElementById('searchBook').value=''; // clear the text box
+            document.getElementById('books').innerHTML=''; // clear result section
+            //document.getElementById('text').innerHTML='';
+            if(!key)
+            {
+                alert("Give keyword to search a book!");
+                return;
+            }
+            const xhr = new XMLHttpRequest;
+            url=("http://localhost:3000/books/"+key);
+            xhr.open('GET',url,true);
+            xhr.send();
+            xhr.onreadystatechange = function()
+            {
+                if(xhr.readyState==4)
+                {
+                    if(xhr.status==200)
+                    {
+                        if(!xhr.responseText)
+                            {
+                                document.getElementById('text').innerHTML='';
+                                alert("There are no books found with keyword: "+key);
+                            }
+                            else
+                            {
+                                alert("Here are all the matching books found for keyword '"+key+"'")
+                                document.getElementById('text').innerHTML='<h1 className= "text-center">Books</h1> id | author | title | genre | price';
+                                let divElem = document.getElementById('books');
+                                const result = JSON.parse(xhr.responseText);
+                                result.forEach((item)=>
+                                {
+                                    divElem.innerHTML+=`${item.id}|${item.author}|${item.title}|${item.genre}|${item.price}<br>`;
+                                });
+                            }
+
+                    }
+                }
+            };
+        });
+    });
+</script>
+</body>
+</html>
