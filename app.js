@@ -1,9 +1,4 @@
 const sqlite3 = require('sqlite3').verbose();
-// let userDB = new sqlite3.Database("./user1.db", 
-    // sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, 
-    // (err) => { 
-    //     // do your thing 
-    // });
 let db = new sqlite3.Database('./books.db');
 db.run(`CREATE TABLE IF NOT EXISTS books ( id integer primary key autoincrement , author text not null , title text not null , genre text not null , price float not null )`)
 db.close();
@@ -34,7 +29,12 @@ app.get('/books/*', (req, res) =>
     let db = new sqlite3.Database('./books.db');
     let sql = (`select * from books where title like ? `);
     db.all(sql, [keyword], (err, rows) => {
-        if(rows.length==0)
+        if(err)
+        {
+            console.log("error querying db");
+            res.send("ERROR");
+        }
+        else if(rows.length==0)
         {
             console.log("no books with key: "+key);
             res.send(null);

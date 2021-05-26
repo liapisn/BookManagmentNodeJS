@@ -14,8 +14,10 @@
             .addbooks{color: black; background-color: orange; text-align: center;}
             .searchbooks{color: orangered; background-color: blue; text-align: center; }
             .text{color: #0fc690; text-align: center;}
-            .books{background-color: #0fc690; text-align: center;}
+            .books{background-color: #0fc690; text-align: center; }
             .footer {background: #023023; padding-top: 55px;}
+            table, th, td {border: 1px solid black;border-collapse: collapse; }
+            th, td {padding: 5px;}
         </style>   
     </head>
     <header >
@@ -29,6 +31,7 @@
             Author => <input type="text" id="author" > 
             Title => <input type="text" id="title" >
             Genre => <select id="genre" >
+                <option value disabled selected>Genre</option>
                 <option value="Science fiction">Science fiction</option>
                 <option value="Satire">Satire</option>
                 <option value="Drama">Drama</option>
@@ -48,7 +51,6 @@
             <input type="image" id="getBooks" src="images/search_icon.png" alt="Submit" width="29" height="29" >
             <!-- <input type="button" id="getBooks" value="Get Books" > -->
         </div>
-        <div id="text" class="text" ></div><br>
         <div id="books" class="books"></div>
         <figure><img src="images/searchBook.jpg" alt="img"/></figure>
     </body>
@@ -61,7 +63,6 @@
         {
             document.getElementById('addBook').addEventListener('click',(event)=>
             {
-                document.getElementById('text').innerHTML='';
                 document.getElementById('books').innerHTML='';
                 const book= {
                     'author':document.getElementById('author').value,
@@ -75,7 +76,7 @@
                  */
                 document.getElementById('author').value='';
                 document.getElementById('title').value='';
-                document.getElementById('genre').value='Science fiction';
+                document.getElementById('genre').value='';
                 document.getElementById('price').value='';
 
                 if(Number.isNaN(book.price))
@@ -136,19 +137,24 @@
                         {   
                             if(!xhr.responseText)
                             {
-                                document.getElementById('text').innerHTML='';
                                 alert("There are no books found with keyword: "+key);
                             }
                             else
                             {
                                 alert("Here are all the matching books found for keyword '"+key+"'")
-                                document.getElementById('text').innerHTML='<h1 className= "text-center">Books</h1> id | author | title | genre | price';
-                                let divElem = document.getElementById('books');
                                 const result = JSON.parse(xhr.responseText);
-                                result.forEach((item)=>
+                                let divElem = document.getElementById('books');
+                                var newhtml = divElem.innerHTML;
+                                newhtml += `<table style="width:100%"> <caption> Books </caption>`;
+                                newhtml +="<tr> <th>Id</th><th>Author</th><th>Title</th><th>Genre</th><th>Price</th></tr>";
+                                result.forEach(element => 
                                 {
-                                    divElem.innerHTML+=`${item.id}|${item.author}|${item.title}|${item.genre}|${item.price}<br>`;
+                                    newhtml += "<tr>";
+                                    newhtml += `<td> <b>${element.id}</b></td><td>${element.author}</td><td>${element.title}</td><td>${element.genre}</td><td>${element.price}</td>`;
+                                    newhtml += "</tr>";
                                 });
+                                newhtml += "</table>";
+                                divElem.innerHTML=newhtml;
                             }
                         }
                     }
