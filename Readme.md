@@ -17,3 +17,16 @@ Run this command to download dependancies
 First of all run this command to start nodeJs programm 
 ``` node .\app.js ```
 And then open <b>frontend.html</b> file to your browser and use the app 
+
+# About DB
+
+With app start programm creates automatically the sqlite database with this table type 
+``` CREATE TABLE books 
+(
+    id integer primary key autoincrement , 
+    author text not null , 
+    title text not null , 
+    genre text not null , 
+    price float not null 
+)
+```
