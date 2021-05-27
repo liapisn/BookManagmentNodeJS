@@ -21,7 +21,8 @@ And then open <b>frontend.html</b> file to your browser and use the app
 # About DB
 
 With app start programm creates automatically the sqlite database with this table type 
-``` CREATE TABLE books 
+``` 
+CREATE TABLE books 
 (
     id integer primary key autoincrement , 
     author text not null , 
