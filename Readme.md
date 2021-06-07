@@ -20,7 +20,7 @@ And then open <b>frontend.html</b> file to your browser and use the app
 
 # About DB
 
-With app start programm creates automatically the sqlite database with this table type 
+With app start program creates automatically the sqlite database with this table type 
 ``` 
 CREATE TABLE books 
 (
